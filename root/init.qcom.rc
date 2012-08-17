@@ -191,7 +191,7 @@ on post-fs-data
 
 # Export GPIO56 for fusion targets to enable/disable hub
 service usbhub_init /system/bin/usbhub_init
-   class late_start
+   class main
    user root
    disabled
    oneshot
@@ -238,7 +238,7 @@ on property:persist.cne.UseCne=Vendor
 #/* Begin: modified by z00176551 20111211 for fix EFS partiton */
 #service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11 /dev/block/mmcblk0p17
 service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p11 /dev/block/mmcblk0p12 /dev/block/mmcblk0p14
-    class late_start
+    class main
     user root
     disabled
 #/* End: modified by z00176551 20111211 for fix EFS partiton */
@@ -254,7 +254,7 @@ service brcmpatch /system/bin/log -t brcm-bluetooth -p i "brcm_patchram_plus ser
     oneshot
     
 service hciattach /system/bin/sh /system/etc/init.brcm.bt.sh
-    class late_start
+    class main
     user bluetooth
     group qcom_oncrpc bluetooth net_bt_admin
     disabled
@@ -263,37 +263,37 @@ service hciattach /system/bin/sh /system/etc/init.brcm.bt.sh
 
 
 service bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
-    class late_start
+    class main
     disabled
     oneshot
 
 service bt-sap /system/bin/sapd 15
-    class late_start
+    class main
     disabled
     oneshot
 
 service sapd /system/bin/sdptool add --channel=15 SAP
-    class late_start
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
 service dund /system/bin/sdptool add --channel=1 DUN
-    class late_start
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
 service bridgemgrd /system/bin/bridgemgrd
-    class late_start
+    class main
     user radio
     group radio
     disabled
 
 service port-bridge /system/bin/port-bridge /dev/smd0 /dev/ttyGS0
-    class late_start
+    class main
     user system
     group system inet
     disabled
@@ -303,23 +303,23 @@ on property:ro.baseband="msm"
     setprop ro.qualcomm.bluetooth.dun true
 
 service qmiproxy /system/bin/qmiproxy
-    class late_start
+    class main
     user radio
     group radio
     disabled
 
 service qmuxd /system/bin/qmuxd
-    class late_start
+    class main
     user radio
     group radio
     disabled
 
 service netmgrd /system/bin/netmgrd
-    class late_start
+    class main
     disabled
 
 service sensors /system/bin/sensors.qcom
-    class late_start
+    class main
     user root
     group root
     disabled
@@ -335,7 +335,7 @@ on property:ro.data.large_tcp_window_size=true
 
 #/* <DTS2011092706355  w00171146 close qcom bt-wifi coex, begin 2011/9/27 */
 #service btwlancoex /system/bin/sh /system/etc/init.qcom.coex.sh
-#    class late_start
+#    class main
 #    user bluetooth
 #    group bluetooth net_bt_admin inet net_admin net_raw
 #    disabled
@@ -343,19 +343,19 @@ on property:ro.data.large_tcp_window_size=true
 #/* DTS2011092706355  w00171146 close qcom bt-wifi coex, end 2011/9/27> */
 
 service amp_init /system/bin/amploader -i
-    class late_start
+    class main
     user root
     disabled
     oneshot
 
 service amp_load /system/bin/amploader -l 7000
-    class late_start
+    class main
     user root
     disabled
     oneshot
 
 service amp_unload /system/bin/amploader -u
-    class late_start
+    class main
     user root
     disabled
     oneshot
@@ -363,7 +363,7 @@ service amp_unload /system/bin/amploader -u
 # Begin: modifed by j00165480 for wifi
 service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
 #service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dnl80211 -ddd
-    class late_start
+    class main
     user root
     group wifi inet
     socket wpa_wlan0 dgram 660 wifi wifi
@@ -381,22 +381,22 @@ service wpa_supp_wapi /system/bin/logwrapper /system/bin/wpa_supplicant_wapi -Dw
 #End:DTS2012010406373 added by j00165480 for WAPI on 2011/10/10
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -BKLG
-    class late_start
+    class main
     disabled
     oneshot
 
 service dhcpcd_p2p /system/bin/dhcpcd -BKLG
-    class late_start
+    class main
     disabled
     oneshot
 
 service iprenew_wlan0 /system/bin/dhcpcd -n
-    class late_start
+    class main
     disabled
     oneshot
 
 service iprenew_p2p /system/bin/dhcpcd -n p2p
-    class late_start
+    class main
     disabled
     oneshot
 
@@ -410,25 +410,25 @@ service wiperiface /system/bin/wiperiface
     oneshot
 
 service gpsone_daemon /system/bin/gpsone_daemon
-    class late_start
+    class main
     user system
     group system qcom_oncrpc inet
     disabled
 
 service quipc_igsn /system/bin/quipc_igsn
-    class late_start
+    class main
     user gps
     group inet gps
     disabled
 
 service quipc_main /system/bin/quipc_main
-    class late_start
+    class main
     user gps
     group net_admin wifi inet gps
     disabled
 
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
-    class late_start
+    class main
     user root
     group system qcom_oncrpc
     disabled
@@ -443,7 +443,7 @@ on property:crypto.driver.load=0
      exec /system/bin/rmmod qce.ko
 
 service drmdiag /system/bin/drmdiagapp
-    class late_start
+    class main
      user root
      disabled
      oneshot
@@ -455,31 +455,31 @@ on property:drmdiag.load=0
     stop drmdiag
 
 service qcom-sh /system/bin/sh /init.qcom.sh
-    class late_start
+    class main
     user root
     oneshot
 
 service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
-    class late_start
+    class main
     user root
     disabled
     oneshot
 
 service qcom-wifi /system/bin/sh /system/etc/init.qcom.wifi.sh
-    class late_start
+    class main
     oneshot
 
 on property:init.svc.bootanim=stopped
     start qcom-post-boot
 
 service atfwd /system/bin/ATFWD-daemon
-    class late_start
+    class main
     user system
     group system radio
     onrestart /system/bin/log -t RIL-ATFWD -p w "ATFWD daemon restarted"
 
 service hdmid /system/bin/hdmid
-    class late_start
+    class main
     socket hdmid stream 0660 root system graphics
     disabled
 
@@ -487,11 +487,11 @@ on property:ro.hdmi.enable=true
     start hdmid
 
 service abld /system/bin/mm-abl-daemon
-    class late_start
+    class main
     disabled
 
 service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
-    class late_start
+    class main
     user root
     group root
     oneshot
@@ -520,7 +520,7 @@ service sar /system/bin/sar
 #/* End: DTS2012011703003 added SAR service by l00185943, 2012-01-17 */
 #/* DTS2011052200261 wanglin 00170809 add for save kmsg 2011-05-22  end>*/
 service ds_fmc_appd /system/bin/ds_fmc_appd -p "rmnet0" -D
-    class late_start
+    class main
     group radio
     disabled
     oneshot
@@ -529,7 +529,7 @@ on property:persist.data.ds_fmc_app.mode=1
     start ds_fmc_appd
 
 service ims_regmanager /system/bin/exe-ims-regmanagerprocessnative
-    class late_start
+    class main
     user system
     group qcom_oncrpc net_bt_admin inet radio wifi
     disabled
@@ -573,7 +573,7 @@ on property:persist.thermal.monitor=true
     start thermald
 
 service time_daemon /system/bin/time_daemon
-    class late_start
+    class main
     user root
     group root
     oneshot
@@ -586,28 +586,28 @@ on property:persist.timed.enable=true
 #/* DTS2011100601117  for time by z00168965, end 2011/10/10> */
 
 service ftp /system/bin/sdptool add --psm=5257 --channel=20 FTP
-    class late_start
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
 service map0 /system/bin/sdptool add --channel=16 MAS0
-    class late_start
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
 service map1 /system/bin/sdptool add --channel=17 MAS1
-    class late_start
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
     oneshot
 
 service ril-daemon1 /system/bin/rild -c 1
-    class late_start
+    class main
     socket rild1 stream 660 root radio
     socket rild-debug1 stream 660 radio system
     user root
@@ -615,7 +615,7 @@ service ril-daemon1 /system/bin/rild -c 1
     group radio cache inet misc audio sdcard_rw qcom_oncrpc diag
 
 service profiler_daemon /system/bin/profiler_daemon
-    class late_start
+    class main
     user root
     group root
     disabled
@@ -641,7 +641,7 @@ service sensor_daemon /system/bin/sensor_daemon
 #Begin: DTS2011051301319 modified by z00175749 for adjusting the partition 20110513
 #service hw_fuse /system/bin/sdcard /mnt/emmc/share 1000 1015
 service hw_fuse /system/bin/sdcard /data/share 1000 1015
-    class late_start
+    class main
     oneshot
 #End: DTS2011051301319 modified by z00175749 for adjusting the partition 20110513
 #/*End  : DTS2011042400156 z00175749 20110420*/
@@ -692,7 +692,7 @@ service sar /system/bin/sar
 
 #Begin: DTS2012020302741 added by z00175749 for cifs
 service hw_cifs /system/bin/hw_cifs
-    class late_start
+    class main
     user root
     group root
     disabled
@@ -711,7 +711,7 @@ on property:persist.sys.sdio.lowfreqmode=0
 #Begin: DTS2012020402258 added by j0165480 for SDIO lowfreq mode, 2011/12/12
 #Begin: DTS2012021302687 added by z00175749 20120213 for load_logo 
 service load_logo /system/bin/load_logo
-    class late_start
+    class main
     user root
     group root
     disabled

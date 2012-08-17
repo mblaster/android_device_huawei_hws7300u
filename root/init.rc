@@ -391,7 +391,7 @@ on boot
     class_start main
 
 on nonencrypted
-    class_start late_start
+    class_start main
 
 on charger
     class_start charger
@@ -410,11 +410,11 @@ on property:vold.decrypt=trigger_restart_min_framework
 
 on property:vold.decrypt=trigger_restart_framework
     class_start main
-    class_start late_start
+    class_start main
 
 on property:vold.decrypt=trigger_shutdown_framework
     write /proc/bluetooth/sleep/proto 0
-    class_reset late_start
+    class_reset main
     class_reset main
 
 # Used to disable USB when switching states
@@ -422,7 +422,7 @@ on property:sys.usb.config=none
     stop adbd
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/bDeviceClass 0
-    setprop sys.usb.state $sys.usb.config
+    setprop sys.usb.state ${sys.usb.config}
 
 # adb only USB configuration
 # This should only be used during device bringup
@@ -435,38 +435,38 @@ on property:sys.usb.config=adb
     write /sys/class/android_usb/android0/functions mass_storage,adb
     write /sys/class/android_usb/android0/enable 1
     start adbd
-    setprop sys.usb.state $sys.usb.config
+    setprop sys.usb.state ${sys.usb.config}
 
 # USB accessory configuration
 on property:sys.usb.config=accessory
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
     write /sys/class/android_usb/android0/idProduct 2d00
-    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
-    setprop sys.usb.state $sys.usb.config
+    setprop sys.usb.state ${sys.usb.config}
 
 # USB accessory configuration, with adb
 on property:sys.usb.config=accessory,adb
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
     write /sys/class/android_usb/android0/idProduct 2d01
-    write /sys/class/android_usb/android0/functions $sys.usb.config
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
     start adbd
-    setprop sys.usb.state $sys.usb.config
+    setprop sys.usb.state ${sys.usb.config}
 
 on property:sys.usb.fastboot=normal
-    write /sys/module/g_android/parameters/usb_fastboot $sys.usb.fastboot
+    write /sys/module/g_android/parameters/usb_fastboot ${sys.usb.fastboot}
     wait aabbcc
     write /sys/class/android_usb/android0/enable 1
 on property:sys.usb.fastboot=deepsleep
     write /sys/class/android_usb/android0/enable 0
-    write /sys/module/g_android/parameters/usb_fastboot $sys.usb.fastboot
+    write /sys/module/g_android/parameters/usb_fastboot ${sys.usb.fastboot}
 # Used to set USB configuration at boot and to switch the configuration
 # when changing the default configuration
 on property:persist.sys.usb.config=*
-    setprop sys.usb.config $persist.sys.usb.config
+    setprop sys.usb.config ${persist.sys.usb.config}
 
 service hwinsmod /system/bin/sh /etc/init.hw.insmod.sh
     class early_start
